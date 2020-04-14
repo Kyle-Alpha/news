@@ -4,7 +4,7 @@
     <div v-if="$store.state.userInfo.token" class="top">
       <!-- 用户信息 -->
       <div v-if="$store.state.userInfo.token" class="user-info">
-        <img @click="$router.push('/profile')" class="avatar" :src="userInfo.photo" alt />
+        <img @click="$router.push(`/userInfo/${userInfo.id}`)" class="avatar" :src="userInfo.photo" alt />
         <span class="name">{{ userInfo.name }}</span>
       </div>
 
@@ -49,16 +49,6 @@
     <van-cell-group class="bottom-wrap">
       <van-cell title="消息通知" is-link />
       <van-cell title="用户反馈" is-link />
-      <!--
-        以前参数里是直接写路径，例如 $router.push('/robot')
-        可以传对象的
-          对象有固定的属性
-            name：路由的名字
-            params：给路由的参数（数据）
-            path: 写路径的路径的
-
-        如果是用这种写法，而且你还要传params的话，就不能用path，只能用name
-      -->
       <van-cell
         @click="$router.push({ name:'robot',params:{ icon:userInfo.photo } })"
         title="小智同学"

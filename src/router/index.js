@@ -22,7 +22,8 @@ const routes = [
     path: '/result/:art',
     component: () => import('@/views/searchResult/index')
   },
-  { path: '/detail/:id', component: () => import('@/views/details/index') }
+  { path: '/detail/:id', component: () => import('@/views/details/index') },
+  { path: '/userInfo/:id', component: () => import('@/views/userInfo/index') }
 ]
 const router = new VueRouter({
   routes

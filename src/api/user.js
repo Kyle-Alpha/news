@@ -37,10 +37,10 @@ export function getProfile() {
 }
 
 // 上传头像的接口
-export function uploadPhoto(data) {
+export function uploadPhoto(photo) {
   let fm = new FormData()
   // key叫photo,值就用我们刚刚传过来的图片
-  fm.append('photo', data.photo)
+  fm.append('photo', photo)
 
   return request({
     url: 'user/photo',

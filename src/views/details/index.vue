@@ -44,9 +44,9 @@
         </div>
       </template>
     </van-cell>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <comment v-for="(item, index) in 5" :key="index" />
-    </van-list>
+    <comment />
+    <write :is_collected="list.is_collected" :isReply="false" />
+    <reply />
   </div>
 </template>
 
@@ -60,9 +60,13 @@ import {
 } from '@/api/article'
 import { followUser, quguanUser } from '@/api/user'
 import comment from './components/comment'
+import write from './components/write'
+import reply from './components/reply'
 export default {
   components: {
-    comment
+    comment,
+    write,
+    reply
   },
   data() {
     return {
@@ -102,7 +106,6 @@ export default {
       }
     },
     like() {
-      console.log(this.list.attitude)
       if (this.list.attitude === -1) {
         articleBuXiHuan({ target: this.list.art_id })
         this.list.attitude = 0
