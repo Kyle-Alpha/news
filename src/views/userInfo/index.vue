@@ -15,8 +15,10 @@
       </van-cell>
       <van-cell title="昵称" :value="userInfo.name" @click="showname=true" is-link></van-cell>
       <van-cell title="介绍" :value="userInfo.intro" @click="showintro=true" is-link></van-cell>
-      <van-cell title="性别" :value="userInfo.gender?'女':'男'" is-link></van-cell>
-      <van-cell title="生日" :value="userInfo.birthday" @click="showbirth=true" is-link></van-cell>
+      <van-cell title="性别" @click="showgender=true" :value="userInfo.gender===0?'男':'女'" is-link></van-cell>
+      <van-cell title="生日" @click="showbirth=true" is-link>
+        <template #default>{{userInfo.birthday | formatDate}}</template>
+      </van-cell>
     </van-cell-group>
     <van-popup v-model="showname" position="bottom" :style="{ height: '7%' }">
       <van-form>
@@ -44,6 +46,18 @@
         type="date"
         :min-date="minDate"
         :max-date="maxDate"
+        @confirm="confirmPicker"
+        visible-item-count="3"
+      />
+    </van-popup>
+    <van-popup v-model="showgender" position="bottom" :style="{ height: '15%' }">
+      <van-picker
+      show-toolbar
+        title="请选择性别"
+        :default-index="userInfo.gender"
+        visible-item-count="3"
+        :columns="columns"
+        @change="onChange"
       />
     </van-popup>
     <upload ref="upload" @upOK="changeImage" />
@@ -53,6 +67,7 @@
 <script>
 import { getProfile, getInfo, editProfile } from '@/api/user'
 import upload from './component/upload'
+import dayjs from 'dayjs'
 export default {
   components: {
     upload
@@ -63,17 +78,19 @@ export default {
       showname: false,
       showintro: false,
       showbirth: false,
-      minDate: new Date(2020, 0, 1),
+      showgender: false,
+      minDate: new Date(1990, 0, 1),
       maxDate: new Date(2025, 10, 1),
-      currentDate: new Date()
-    }
-  },
-  watch: {
-    userInfo(n, o) {
-      console.log(n.photo)
+      columns: ['男', '女']
     }
   },
   methods: {
+    confirmPicker(value) {
+      this.userInfo.birthday = value
+    },
+    onChange(picker, value, index) {
+      this.userInfo.gender = index
+    },
     uploadShow() {
       this.$refs.upload.show = true
     },
@@ -83,9 +100,10 @@ export default {
     async onClickRight() {
       var obj = { ...this.userInfo }
       delete obj.photo
+      obj.birthday = dayjs(obj.birthday).format('YYYY-MM-DD')
       var res = await editProfile(obj)
       if (res) {
-        this.$toast.success('保存成功')
+        this.$toast.success('提交成功')
       }
     },
     async getUserInfo() {
@@ -95,9 +113,9 @@ export default {
         data: { intro }
       } = await getInfo({ target: this.$route.params.id })
       this.$set(this.userInfo, 'intro', intro)
+      this.userInfo.birthday = new Date(this.userInfo.birthday.split('-'))
     },
     changeImage(v) {
-      console.log(v)
       this.userInfo.photo = v
     }
   },
@@ -117,7 +135,11 @@ export default {
   }
   .van-nav-bar__text {
     color: #fff;
+    &:active {
+      background-color: #3692fa;
+    }
   }
+
   .van-nav-bar {
     background-color: #3692fa;
     .van-nav-bar__left {

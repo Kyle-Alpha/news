@@ -14,3 +14,7 @@ Vue.filter('formatTime', (value) => {
   // 过滤时间，返回相对时间
   return dayjs().from(value)
 })
+Vue.filter('formatDate', (value) => {
+  // 过滤时间，返回相对时间
+  return dayjs(value).format('YYYY-MM-DD')
+})

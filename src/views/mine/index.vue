@@ -50,7 +50,7 @@
       <van-cell title="消息通知" is-link />
       <van-cell title="用户反馈" is-link />
       <van-cell
-        @click="$router.push({ name:'robot',params:{ icon:userInfo.photo } })"
+        @click="$router.push({ name:'zhi',query:{ icon:userInfo.photo } })"
         title="小智同学"
         is-link
       />

@@ -23,7 +23,12 @@ const routes = [
     component: () => import('@/views/searchResult/index')
   },
   { path: '/detail/:id', component: () => import('@/views/details/index') },
-  { path: '/userInfo/:id', component: () => import('@/views/userInfo/index') }
+  { path: '/userInfo/:id', component: () => import('@/views/userInfo/index') },
+  {
+    path: '/zhi',
+    name: 'zhi',
+    component: () => import('@/views/xiaozhi/index')
+  }
 ]
 const router = new VueRouter({
   routes
